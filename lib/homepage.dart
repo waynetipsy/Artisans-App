@@ -5,6 +5,7 @@ import 'package:bottom_navs/Screens%20nav/userpolicy.dart';
 import 'package:flutter/material.dart';
 import './Screens nav/menu_items.dart';
 import './Screens nav/menu_item.dart';
+import './widgets/categories_scroller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({ Key? key }) : super(key: key);
@@ -14,15 +15,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+ List<String> items = [
+   'John'
+  
+ ];
+
+  ScrollController controller = ScrollController();
+  bool closeTopContainer = false;
+
+  List<Widget> itemData = [];
+
+  void getPostsData() {
+    //List<dynamic> responseList = Data;
+    List<Widget> listItems = [];
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        elevation: 0,
         backgroundColor: Colors.orange,
+        
         centerTitle: true,
         actions: [
+          
         PopupMenuButton<MenuItem>(
+          
           onSelected: (item) => onSelected(context, item),
           itemBuilder: (context) => [
         ...MenuItems.itemsFirst.map(buildItem).toList(),
@@ -32,7 +53,54 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
        ),
-       body: Container(),
+       body: Container(
+        // height: size.height,
+         child: Column(
+           
+           children: [
+            const SizedBox(height: 10),
+            Row(mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text('Featured Artisans',
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+              ),
+             ],
+            ),
+            const SizedBox(height: 10),
+            const Categories(),
+            const SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+              itemCount: items.length,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+             final item = items[index];
+              return ListTile(
+                leading: const CircleAvatar(
+                  radius: 28,
+                backgroundImage: NetworkImage('url'),
+                ),
+                title: Text(item,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  ),
+                ),
+                subtitle: Text('Subtitle $index'),
+                onTap: () {},
+                trailing: const Text('Available',
+                style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              );
+              }
+              ),
+            ),
+          ]
+         ),
+       ),
     );
   }
   PopupMenuItem<MenuItem> buildItem(MenuItem item) => PopupMenuItem(
